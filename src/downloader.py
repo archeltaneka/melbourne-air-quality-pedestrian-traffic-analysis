@@ -27,7 +27,7 @@ class Downloader:
             self.pedestrian_dir.mkdir(parents=True, exist_ok=True)
 
     def _download(self, url, save_path):
-        self.logger.info(f"Downloading {url} to {save_path}")
+        self.logger.info(f"Downloading {url} to {save_path}...")
         try:
             urllib.request.urlretrieve(url, save_path)
             self.logger.info(f"Downloaded {url} to {save_path}")
@@ -47,3 +47,5 @@ class Downloader:
             pedestrian_url = base_pedestrian_url + month + "_2022.csv"
             pedestrian_save_path = self.pedestrian_dir/f'{month}_2022_pedestrian_level.csv'
             self._download(url=pedestrian_url, save_path=pedestrian_save_path)
+
+        self.logger.info("Download completed.")
