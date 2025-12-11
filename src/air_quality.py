@@ -101,5 +101,10 @@ class AirQualityProcessor:
         df = self.wrangle(df)
         self.logger.info("Aggregating air quality data...")
         df = self.aggregate(df)
+        self.logger.info("Processing air quality data completed.")
 
         return df
+
+    def save_data(self, df, fname):
+        df.to_csv(fname, index=False)
+        self.logger.info(f"Saved air quality data to {fname}")

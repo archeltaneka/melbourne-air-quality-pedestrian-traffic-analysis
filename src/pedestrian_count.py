@@ -111,5 +111,10 @@ class PedestrianCountProcessor:
         df = self.clean(df)
         self.logger.info("Wrangling pedestrian count data...")
         df = self.wrangle(df)
+        self.logger.info("Processing pedestrian count data completed.")
 
         return df
+
+    def save_data(self, df, fname):
+        df.to_csv(fname, index=False)
+        self.logger.info(f"Saved pedestrian count data to {fname}")
