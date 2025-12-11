@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 import numpy as np
 
@@ -5,17 +6,22 @@ from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+
 class AirQualityProcessor:
     def __init__(self):
-        self.measurements_to_include = ["BSP", "SWS", "VWD", "VWS", "Sigma05", "BPM2.5"]
+        self.measurements_to_exclude = ["BSP", "SWS", "VWD", "VWS", "Sigma05", "BPM2.5", "SIG05"]
         self.cols_to_drop = [
             "datetime_local", "location_id", "validation_flag", "parameter_method_name", 
             "parameter_description", "unit_of_measure", "method_quality", "analysis_method_name"
         ]
-        self.num_cols = [
-            'latitude', 'longitude', 'CO', 'DBT', 'NO2', 'O3', 
-            'PM10', 'PM2.5', 'SIG05', 'SO2'
-        ] 
+        self.num_cols = ['latitude', 'longitude', 'CO', 'DBT', 'NO2', 'O3', 'PM10', 'PM2.5', 'SO2'] 
+        self.logger = logging.getLogger(__name__)
 
     def _cast_column_types(self, df):
         for col in self.num_cols:
@@ -50,7 +56,7 @@ class AirQualityProcessor:
         return df
 
     def clean(self, df):
-        df = df.query("parameter_name not in @self.measurements_to_include")
+        df = df.query("parameter_name not in @self.measurements_to_exclude")
         df = df.drop(columns=self.cols_to_drop, axis=1)
         df = df.pivot(
             index=["datetime_AEST", "location_name", "latitude", "longitude"],
@@ -75,8 +81,25 @@ class AirQualityProcessor:
 
         return df
 
+    def aggregate(self, df):
+        df = df.groupby(["datetime_AEST", "month", "date", "day", "hour", "season"]).agg({
+            "CO": "median",
+            "DBT": "median",
+            "NO2": "median",
+            "O3": "median",
+            "PM10": "median",
+            "PM2.5": "median",
+            "SO2": "median"
+        }).reset_index()
+
+        return df
+
     def transform(self, df):
+        self.logger.info("Cleaning air quality data...")
         df = self.clean(df)
+        self.logger.info("Wrangling air quality data...")
         df = self.wrangle(df)
-        
+        self.logger.info("Aggregating air quality data...")
+        df = self.aggregate(df)
+
         return df
