@@ -1,5 +1,14 @@
+import logging
+
 import numpy as np
 import pandas as pd
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 
 class PedestrianCountProcessor:
@@ -17,6 +26,7 @@ class PedestrianCountProcessor:
             "380 Elizabeth St",
             "La Trobe St - William St (South)"
         ]
+        self.logger = logging.getLogger(__name__)
 
     def _clean_columns(self, df):
         df.columns = (
@@ -97,7 +107,9 @@ class PedestrianCountProcessor:
         return df
     
     def transform(self, df):
+        self.logger.info("Cleaning pedestrian count data...")
         df = self.clean(df)
+        self.logger.info("Wrangling pedestrian count data...")
         df = self.wrangle(df)
 
         return df
