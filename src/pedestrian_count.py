@@ -1,4 +1,5 @@
 import logging
+import re
 
 import numpy as np
 import pandas as pd
@@ -13,12 +14,27 @@ logging.basicConfig(
 
 class PedestrianCountProcessor:
     def __init__(self):
+        # These area names refer to the same location but with different spellings
         self.location_mapping = {
             "Lincoln - Swanston (W)": "Lincoln - Swanston (West)",
             "Harbour Esplanade - Pedestrian Path": "Harbour Esplanade (West) - Pedestrian Path",
             "Harbour Esplanade - Bike Path": "Harbour Esplanade (West) - Bike Path",
             "Rmit Bld 80 - 445 Swanston Street": "Rmit Building 80" 
         }
+
+        # These nominatim mapping rules below is needed because the Nominatim API cannot find the exact location of these areas
+        self.nominatim_mapping_rules = {
+            "Bourke St Bridge": "Bourke St",
+            "Flinders Street Station Underpass": "Flinders Street Station",
+            "Melbourne Convention Exhibition Centre": "MCEC",
+            "Qv Market": "Queen Victoria Market",
+            "Qvm": "Queen Victoria Market",
+            "Rmit Building 14": "RMIT Building",
+            "Rmit Building 80": "RMIT Building"
+        }
+
+        # The pedestrian count data is not consistent
+        # Some of these area names do not exist in the historical pedestrian count dataset
         self.cols_to_add = [
             "William St - Little Lonsdale St (West)",
             "Errol St (West)",
@@ -26,6 +42,7 @@ class PedestrianCountProcessor:
             "380 Elizabeth St",
             "La Trobe St - William St (South)"
         ]
+        
         self.logger = logging.getLogger(__name__)
 
     def _clean_columns(self, df):
@@ -86,6 +103,13 @@ class PedestrianCountProcessor:
 
         return df
 
+    def _extract_area(self, area):
+        match = re.split(r'[-(]', area, maxsplit=1)
+        extracted_area = match[0].strip()
+        if extracted_area not in self.nominatim_mapping_rules:
+            return extracted_area + ", Victoria, Australia"  # Take the first part and strip whitespace
+        return self.nominatim_mapping_rules[extracted_area] + ", Victoria, Australia"  # Fallback: return the entire string if no match
+
     def clean(self, df):
         df = self._clean_columns(df)
         df = self._handle_null_values(df)
@@ -103,6 +127,15 @@ class PedestrianCountProcessor:
         df = self._get_season(df)
         df['datetime_AEST'] = df['Date'].astype(str) + " " + df['Hour'].astype(str).str.zfill(2) + ":00:00"
         df['datetime_AEST'] = pd.to_datetime(df['datetime_AEST'], format='%Y-%m-%d %H:%M:%S')
+        # Pivot the data into long format for easier visualization
+        df = pd.melt(
+            df,
+            id_vars=['datetime_AEST'],
+            var_name='area',
+            value_name='pedestrian_count'
+        )
+        df['nominatim_area'] = df["area"].apply(self._extract_area)
+        df['nominatim_area'] = df['nominatim_area'].str.strip().str.lower()
 
         return df
     
