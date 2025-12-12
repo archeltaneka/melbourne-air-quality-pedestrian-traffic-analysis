@@ -82,3 +82,5 @@ class AreaMapper:
 
         location_df.to_csv(self.save_dir/self.area_mapping_fname, index=False)
         self.logger.info(f"Area coordinates mapping saved to {self.save_dir/self.area_mapping_fname}")
+
+        return location_df
