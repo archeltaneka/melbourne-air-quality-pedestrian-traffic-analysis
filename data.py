@@ -28,10 +28,15 @@ if __name__ == '__main__':
     pedestrian_dfs = [pd.read_csv(file) for file in pedestrian_files if file != 'pedestrian_count_final.csv']
     pedestrian_df = pd.concat(pedestrian_dfs)
     pedestrian_df = pedestrian_processor.transform(pedestrian_df)
-    pedestrian_processor.save_data(pedestrian_df, DATA_DIR/'pedestrian/pedestrian_count_final.csv')
 
     # Create and save area and latlong mapping
     location_df = pedestrian_df[['nominatim_area']].copy()
     location_df = location_df.drop_duplicates(subset=["nominatim_area"])
     area_mapper = AreaMapper()
-    area_latlong_list = area_mapper.map_area_coordinates(location_df)
+    location_df = area_mapper.map_area_coordinates(location_df)
+
+    # Join the area and latlong mapping to the pedestrian data
+    pedestrian_df = pd.merge(pedestrian_df, location_df, on="nominatim_area", how="left")
+    pedestrian_df = pedestrian_df.drop(columns=["nominatim_area"], axis=1)
+    pedestrian_processor.save_data(pedestrian_df, DATA_DIR/'pedestrian/pedestrian_count_final.csv')
+
