@@ -1,0 +1,843 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Lato', 'Roboto', Arial, sans-serif;
+    font-size: 16px;
+    background-image: url("../assets/images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #333;
+    line-height: 1.6;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: -1;
+}
+
+/* Navigation */
+#navigation {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+    background: rgba(243, 239, 245, 0.95);
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #606c38;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: transparent;
+    color: #283618;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.nav-btn:hover {
+    background: #dda15e;
+    color: white;
+}
+
+.nav-btn.active {
+    background: #606c38;
+    color: white;
+}
+
+/* Section Styling */
+.section {
+    padding: 120px 20px 40px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+}
+
+.section.visible {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+    display: block;
+}
+
+/* Project Info Styling */
+#project-info {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #f3eff5;
+    padding: 40px;
+    margin-top: 90px;
+    border: 2px solid #606c38;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+#project-info h1 {
+    color: #283618;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
+.project-goals {
+    margin: 30px 0;
+}
+
+.project-goals h2 {
+    color: #283618;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+#aims {
+    list-style: none;
+    padding-left: 0;
+}
+
+#aims li {
+    background: rgba(96, 108, 56, 0.1);
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 4px solid #606c38;
+    border-radius: 4px;
+}
+
+.data-sources {
+    margin-top: 40px;
+}
+
+.data-sources h2 {
+    color: #283618;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.source-item {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border: 1px solid #dda15e;
+}
+
+.source-item h3 {
+    color: #283618;
+    margin-bottom: 10px;
+}
+
+.data-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #606c38;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.data-link:hover {
+    text-decoration: underline;
+}
+
+/* Section Headers */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    color: #283618;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Instructions Styling */
+#instructions,
+#instructions-map {
+    background: #f3eff5;
+    padding: 30px;
+    border: 2px solid #606c38;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+#instructions h3,
+#instructions-map h3 {
+    color: #283618;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.pollutant-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.pollutant-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dda15e;
+}
+
+.pollutant-card h4 {
+    color: #283618;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.pollutant-card p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.insights {
+    margin: 20px 0;
+}
+
+.insight-item {
+    background: rgba(221, 161, 94, 0.1);
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 4px solid #dda15e;
+    border-radius: 4px;
+}
+
+.relationship-insights {
+    margin: 20px 0;
+}
+
+.insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.insight-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #606c38;
+}
+
+.insight-card h4 {
+    color: #283618;
+    margin-bottom: 10px;
+}
+
+.usage-instructions {
+    list-style: none;
+    padding-left: 0;
+}
+
+.usage-instructions li {
+    background: rgba(96, 108, 56, 0.1);
+    padding: 12px;
+    margin: 8px 0;
+    border-left: 4px solid #606c38;
+    border-radius: 4px;
+}
+
+/* Color Legend */
+#color-legend {
+    background: white;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+#color-legend h4 {
+    color: #283618;
+    margin-bottom: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+/* Map Legend */
+#map-legend {
+    background: white;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+#map-legend h4 {
+    color: #283618;
+    margin-bottom: 15px;
+}
+
+/* Controls Styling */
+#controls {
+    background: #f3eff5;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+}
+
+.controls-wrapper-pollutant {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Color Legend - Left side */
+#controls #color-legend {
+    background: white;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 8px;
+    flex: 0 0 250px;
+    /* Fixed width */
+    min-width: 250px;
+    margin: 0;
+    /* Remove default margin */
+}
+
+#controls #color-legend h4 {
+    color: #283618;
+    margin-bottom: 15px;
+}
+
+#controls #color-legend .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#controls #color-legend .legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+.controls-right-pollutant {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 350px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-group label {
+    font-weight: bold;
+    color: #283618;
+}
+
+.control-group select {
+    padding: 8px 12px;
+    border: 1px solid #dda15e;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: white;
+    flex: 1;
+    min-width: 150px;
+}
+
+.date-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-picker label {
+    font-weight: bold;
+    color: #283618;
+    white-space: nowrap;
+}
+
+.date-picker input[type="date"] {
+    padding: 8px;
+    border: 1px solid #dda15e;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Plots Styling */
+#plots {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.plot-row {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.plot-row-centered {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.chart-container {
+    background: white;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.plot,
+.plot-centered {
+    width: 400px;
+    height: 300px;
+    position: relative;
+}
+
+.plot-centered {
+    width: 450px;
+}
+
+.axis-labels {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.x-axis-label,
+.y-axis-label {
+    font-weight: bold;
+    color: #283618;
+    margin: 5px 0;
+}
+
+/* Map and Radar Styling */
+#map-radar-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.map-container,
+.radar-container {
+    background: white;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#map {
+    height: 500px;
+    width: 600px;
+    border-radius: 8px;
+}
+
+#radar-chart {
+    height: 500px;
+    width: 400px;
+    border-radius: 8px;
+}
+
+/* Density Chart Styling */
+#density-container {
+    background: white;
+    padding: 30px;
+    border: 2px solid #606c38;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+#density-container h3 {
+    color: #283618;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#density-chart {
+    height: 400px;
+    width: 100%;
+}
+
+.density-axis-labels {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Slider Container */
+#slider-container {
+    background: #f3eff5;
+    padding: 30px;
+    border: 2px solid #606c38;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Controls Wrapper - Side by side layout */
+.controls-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Map Legend - Left side */
+#slider-container #map-legend {
+    background: white;
+    padding: 20px;
+    border: 2px solid #606c38;
+    border-radius: 8px;
+    flex: 0 0 250px;
+    min-width: 250px;
+}
+
+#slider-container #map-legend h4 {
+    color: #283618;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+#slider-container #map-legend .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#slider-container #map-legend .legend-item span {
+    margin-left: 10px;
+}
+
+/* Controls Right - Right side */
+.controls-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 400px;
+}
+
+.slider-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.slider-controls label {
+    font-weight: bold;
+    color: #283618;
+    font-size: 1.1rem;
+}
+
+#timeline-slider {
+    flex: 1;
+    max-width: 400px;
+    height: 8px;
+    border-radius: 4px;
+    background: #dda15e;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+#timeline-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #606c38;
+    cursor: pointer;
+}
+
+#slider-value {
+    font-weight: bold;
+    color: #283618;
+    font-size: 1.1rem;
+    min-width: 200px;
+    text-align: center;
+}
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#button-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #dda15e;
+    color: #283618;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#button-container button:hover {
+    background: #bc6c25;
+    color: white;
+}
+
+.date-filters {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.date-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-input label {
+    font-weight: bold;
+    color: #283618;
+}
+
+.date-input input[type="date"] {
+    padding: 8px;
+    border: 1px solid #dda15e;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .controls-wrapper {
+        flex-direction: column;
+    }
+
+    #slider-container #map-legend {
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .controls-right {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Tooltip Styling */
+.tooltip {
+    background: #f3eff5;
+    color: #283618;
+    border: 2px solid #dda15e;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 0.9rem;
+    max-width: 300px;
+    z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #navigation {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        margin: 20px auto;
+        max-width: 90%;
+    }
+
+    .section {
+        padding: 20px 10px;
+    }
+
+    #project-info {
+        padding: 20px;
+    }
+
+    #project-info h1 {
+        font-size: 2rem;
+    }
+
+    .plot,
+    .plot-centered {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #map {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    #radar-chart {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #map-radar-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pollutant-info {
+        grid-template-columns: 1fr;
+    }
+
+    .insight-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-filters {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .slider-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .controls-wrapper-pollutant {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    #controls #color-legend {
+        background: white;
+        padding: 20px;
+        border: 2px solid #606c38;
+        border-radius: 8px;
+        flex: 0 0 250px;
+        /* Fixed width */
+        min-width: 250px;
+        margin: 0;
+        /* Remove default margin */
+    }
+
+    .controls-right-pollutant {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 350px;
+    }
+
+    .control-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Quality Check A Day - Melbourne 2022</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto:wght@400;700&display=swap">
+  <base target="_blank">
+</head>
+
+<body>
+  <!-- Navigation Controls -->
+  <div id="navigation">
+    <button id="nav-project" class="nav-btn active">Project Overview</button>
+    <button id="nav-pollutants" class="nav-btn">Pollutant Trends</button>
+    <button id="nav-interaction" class="nav-btn">Pedestrian Impact</button>
+  </div>
+
+  <!-- Project Description Section -->
+  <div id="project-info" class="section visible">
+    <h1>Air Quality Check A Day, Keeps The Pollution Away</h1>
+    <p id="description">Air pollution is a growing concern in Australia, contributing to chronic respiratory diseases
+      and even deaths. Personally, I've noticed how poor air quality affects my endurance and energy during outdoor
+      activities like running. This made me wonder: How does air quality influence daily life, particularly pedestrian
+      activity? With urban populations increasing and air pollution worsening, understanding this relationship is
+      critical for creating healthier, more livable cities.</p>
+
+    <div class="project-goals">
+      <h2>Project Aims</h2>
+      <ul id="aims">
+        <li>To identify seasonal trends in air quality, particularly harmful pollutants.</li>
+        <li>To explore the correlation between pollutant levels and daily pedestrian counts.</li>
+        <li>To provide policymakers and health professionals with actionable insights into mitigating health risks
+          caused by poor air quality.</li>
+      </ul>
+    </div>
+
+    <!-- Data Sources Section -->
+    <div class="data-sources">
+      <h2>Data Sources</h2>
+      <div class="source-item">
+        <h3>Air Quality Data</h3>
+        <p><strong>Source:</strong> Environment Protection Authority (EPA) Victoria (2022)</p>
+        <p><strong>Description:</strong> Hourly air quality measurements across Victoria, including concentrations of
+          CO, NO2, O3, PM2.5, and PM10.</p>
+        <a href="https://apps.epa.vic.gov.au/datavic/Data_Vic/AirWatch/2022_All_sites_air_quality_hourly_avg_AIR-I-F-V-VH-O-S1-DB-M2-4-0.xlsx"
+          target="_blank" class="data-link">Access EPA Data</a>
+      </div>
+
+      <div class="source-item">
+        <h3>Pedestrian Count Data</h3>
+        <p><strong>Source:</strong> City of Melbourne (2022)</p>
+        <p><strong>Description:</strong> Hourly pedestrian counts at various locations throughout Melbourne CBD,
+          collected from January to December 2022.</p>
+        <a href="https://www.pedestrian.melbourne.vic.gov.au/datadownload/January_2022.csv" target="_blank"
+          class="data-link">Access Pedestrian Data</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pollutant Trends Section -->
+  <div id="visualization-container" class="section">
+
+    <!-- Instructions -->
+    <div id="instructions">
+      <div class="section-header">
+        <h2>Pollutant Trends Analysis</h2>
+        <p class="section-description">Explore how air pollutant levels vary across different time periods in Melbourne
+          during 2022.</p>
+      </div>
+      <h3><u>Pollutant Information & Health Impact</u></h3>
+      <div class="pollutant-info">
+        <div class="pollutant-card">
+          <h4>Carbon Monoxide (CO)</h4>
+          <p>Colorless, odorless gas from vehicle emissions. <br><br> <strong>Health Impact:</strong> Reduces oxygen
+            delivery to
+            organs, causes headaches, dizziness, and can be fatal at high concentrations.</p>
+          <p><strong>Measurement:</strong> Parts per million (ppm)</p>
+        </div>
+        <div class="pollutant-card">
+          <h4>Nitrogen Dioxide (NO2)</h4>
+          <p>Reddish-brown gas from vehicle exhaust and industrial processes. <br><br> <strong>Health Impact:</strong>
+            Irritates
+            respiratory system, aggravates asthma, reduces lung function.</p>
+          <p><strong>Measurement:</strong> Parts per billion (ppb)</p>
+        </div>
+        <div class="pollutant-card">
+          <h4>Ozone (O3)</h4>
+          <p>Secondary pollutant formed from sunlight reacting with NOx and VOCs. <br><br> <strong>Health
+              Impact:</strong> Causes
+            chest pain, coughing, throat irritation, worsens bronchitis and emphysema.</p>
+          <p><strong>Measurement:</strong> Parts per billion (ppb)</p>
+        </div>
+        <div class="pollutant-card">
+          <h4>Particulate Matter (PM2.5 & PM10)</h4>
+          <p>Tiny particles from combustion, dust, and industrial processes. <br><br> <strong>Health Impact:</strong>
+            Penetrates
+            deep into lungs and bloodstream, linked to heart disease, stroke, and lung cancer.</p>
+          <p><strong>Measurement:</strong> Micrograms per cubic meter (μg/m³)</p>
+        </div>
+      </div>
+
+      <h3><u>Key Insights from the Data</u></h3>
+      <div class="insights">
+        <div class="insight-item">
+          <strong>Seasonal Patterns:</strong> PM2.5 and PM10 levels peak during winter months (June-August) due to
+          increased heating and stable atmospheric conditions.
+        </div>
+        <div class="insight-item">
+          <strong>Rush Hour Impact:</strong> NO2 and CO concentrations show clear peaks during morning (7-9 AM) and
+          evening (5-7 PM) rush hours.
+        </div>
+        <div class="insight-item">
+          <strong>Ozone Formation:</strong> O3 levels are highest during sunny afternoons when UV radiation drives
+          photochemical reactions.
+        </div>
+        <div class="insight-item">
+          <strong>Weekend Effect:</strong> Pollutant levels are generally lower on weekends, particularly for
+          traffic-related pollutants like CO and NO2.
+        </div>
+      </div>
+
+      <h3><u>How to Use This Visualization</u></h3>
+      <ul class="usage-instructions">
+        <li><strong>HOVER:</strong> Hover over bars to see exact pollutant concentrations and compare across different
+          time periods.</li>
+        <li><strong>FILTER:</strong> Use the dropdown menu to switch between monthly, daily, or hourly views of
+          pollutant data.</li>
+        <li><strong>DATE RANGE:</strong> Select specific start and end dates to focus on particular time periods within
+          2022.</li>
+        <li><strong>COLOR LEGEND:</strong> Bar colors indicate pollution severity - red (high), orange (moderate), green
+          (low).</li>
+      </ul>
+
+    </div>
+
+    <!-- Controls -->
+    <div id="controls">
+      <div class="controls-wrapper-pollutant">
+        <!-- Left side: Color Legend -->
+        <div id="color-legend">
+          <h4>Pollution Level Scale</h4>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #d7191c;"></div>
+            <span>High Pollution</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #fdae61;"></div>
+            <span>Moderate Pollution</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #a6d96a;"></div>
+            <span>Low Pollution</span>
+          </div>
+        </div>
+
+        <!-- Right side: Controls -->
+        <div class="controls-right-pollutant">
+          <div class="control-group">
+            <label for="time-granularity">Time Granularity:</label>
+            <select id="time-granularity">
+              <option value="monthly">Monthly</option>
+              <option value="daily">Daily</option>
+              <option value="hourly">Hourly</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="date-picker">
+              <label for="start-date">Start Date:</label>
+              <input type="date" id="start-date" min="2022-01-01" max="2022-12-31">
+            </div>
+            <div class="date-picker">
+              <label for="end-date">End Date:</label>
+              <input type="date" id="end-date" min="2022-01-01" max="2022-12-31">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar Charts -->
+    <div id="plots">
+      <div id="plot-row-1" class="plot-row">
+        <div class="chart-container">
+          <div id="plot-co" class="plot"></div>
+          <div class="axis-labels">
+            <div class="x-axis-label">Time Period</div>
+            <div class="y-axis-label">CO Concentration (ppm)</div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div id="plot-no2" class="plot"></div>
+          <div class="axis-labels">
+            <div class="x-axis-label">Time Period</div>
+            <div class="y-axis-label">NO₂ Concentration (ppb)</div>
+          </div>
+        </div>
+      </div>
+      <div id="plot-row-2" class="plot-row">
+        <div class="chart-container">
+          <div id="plot-o3" class="plot"></div>
+          <div class="axis-labels">
+            <div class="x-axis-label">Time Period</div>
+            <div class="y-axis-label">O₃ Concentration (ppb)</div>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div id="plot-pm25" class="plot"></div>
+          <div class="axis-labels">
+            <div class="x-axis-label">Time Period</div>
+            <div class="y-axis-label">PM₂.₅ Concentration (μg/m³)</div>
+          </div>
+        </div>
+      </div>
+      <div id="plot-row-3" class="plot-row-centered">
+        <div class="chart-container">
+          <div id="plot-pm10" class="plot-centered"></div>
+          <div class="axis-labels">
+            <div class="x-axis-label">Time Period</div>
+            <div class="y-axis-label">PM₁₀ Concentration (μg/m³)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pedestrian Impact Section -->
+  <div id="map-radar-container" class="section">
+
+    <!-- Instructions -->
+    <div id="instructions-map">
+      <div class="section-header">
+        <h2>Pedestrian Activity vs Air Quality</h2>
+        <p class="section-description">Explore the relationship between pedestrian traffic and air pollution levels
+          across Melbourne.</p>
+      </div>
+      <h3><u>Understanding the Relationship</u></h3>
+      <div class="relationship-insights">
+        <p><strong>The map and radar chart below reveal the complex relationship between pedestrian activity and air
+            quality in Melbourne.</strong></p>
+        <div class="insight-grid">
+          <div class="insight-card">
+            <h4>Rush Hour Patterns</h4>
+            <p>Pedestrian counts peak during morning (7:00-9:00 AM) and evening (5:00-7:00 PM) rush hours, coinciding
+              with elevated NO₂ and CO levels from traffic.</p>
+          </div>
+          <div class="insight-card">
+            <h4>Health Concerns</h4>
+            <p>PM₂.₅, PM₁₀, and O₃ levels are often highest during periods of high pedestrian activity, creating
+              potential health risks for outdoor activities.</p>
+          </div>
+          <div class="insight-card">
+            <h4>Weekend Trends</h4>
+            <p>Weekend pedestrian patterns shift to recreational areas, while traffic-related pollutants decrease
+              significantly.</p>
+          </div>
+          <div class="insight-card">
+            <h4>Seasonal Variations</h4>
+            <p>Winter months show higher particulate matter levels, while summer afternoons have elevated ozone
+              concentrations.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3><u>How to Use This Visualization</u></h3>
+      <ul class="usage-instructions">
+        <li><strong>MAP INTERACTION:</strong> Hover over blue circles to see pedestrian counts and area names. Circle
+          size represents pedestrian volume.</li>
+        <li><strong>RADAR CHART:</strong> Shows pollutant levels for the selected time window across all five
+          pollutants.</li>
+        <li><strong>TIME SLIDER:</strong> Drag the slider to explore different time periods throughout 2022.</li>
+        <li><strong>MEDIA CONTROLS:</strong> Use Play/Stop for automatic time progression, or Prev/Next to step through
+          hour by hour.</li>
+        <li><strong>DATE FILTERING:</strong> Set start and end dates to focus on specific periods of interest.</li>
+      </ul>
+    </div>
+
+    <!-- Map and Radar Chart -->
+    <div id="map-radar-wrapper">
+      <div class="map-container">
+        <div id="map"></div>
+      </div>
+      <div class="radar-container">
+        <div id="radar-chart"></div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div id="slider-container">
+      <div class="controls-wrapper">
+        <!-- Left side: Legend -->
+        <div id="map-legend">
+          <h4>Pedestrian Count Scale</h4>
+          <div class="legend-item">
+            <svg width="20" height="20">
+              <circle cx="10" cy="10" r="3" fill="blue" opacity="0.6" />
+            </svg>
+            <span>~100 pedestrians</span>
+          </div>
+          <div class="legend-item">
+            <svg width="20" height="20">
+              <circle cx="10" cy="10" r="6" fill="blue" opacity="0.6" />
+            </svg>
+            <span>~500 pedestrians</span>
+          </div>
+          <div class="legend-item">
+            <svg width="20" height="20">
+              <circle cx="10" cy="10" r="9" fill="blue" opacity="0.6" />
+            </svg>
+            <span>~1000+ pedestrians</span>
+          </div>
+        </div>
+
+        <!-- Right side: Controls -->
+        <div class="controls-right">
+          <div class="slider-controls">
+            <label for="timeline-slider">Time Window:</label>
+            <input type="range" id="timeline-slider" min="0" max="100" value="0">
+            <span id="slider-value">Date: Loading...</span>
+          </div>
+
+          <div id="button-container">
+            <button id="prev-button">⮜️ Prev</button>
+            <button id="play-button">▶️ Play</button>
+            <button id="stop-button">⏸️ Stop</button>
+            <button id="reset-button">🔄 Reset</button>
+            <button id="next-button">Next ⮞️</button>
+          </div>
+
+          <div class="date-filters">
+            <div class="date-input">
+              <label for="start-date-filter">Start Date:</label>
+              <input type="date" id="start-date-filter" min="2022-01-01" max="2022-12-31">
+            </div>
+            <div class="date-input">
+              <label for="end-date-filter">End Date:</label>
+              <input type="date" id="end-date-filter" min="2022-01-01" max="2022-12-31">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
