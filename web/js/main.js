@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
       section.classList.remove('visible');
-      section.style.display = 'none'; // ADD THIS
+      section.style.display = 'none';
     });
 
     // Remove active class from all nav buttons
@@ -47,28 +47,31 @@ document.addEventListener("DOMContentLoaded", function () {
     switch (sectionName) {
       case 'project':
         projectInfo.classList.add('visible');
-        projectInfo.style.display = 'block'; // ADD THIS
+        projectInfo.style.display = 'block';
         navProject.classList.add('active');
         currentSection = 'project';
         break;
       case 'pollutants':
         visualizationContainer.classList.add('visible');
-        visualizationContainer.style.display = 'block'; // ADD THIS
+        visualizationContainer.style.display = 'block';
         navPollutants.classList.add('active');
         currentSection = 'pollutants';
         if (!data) loadData();
         break;
       case 'interaction':
         mapRadarContainer.classList.add('visible');
-        mapRadarContainer.style.display = 'block'; // ADD THIS
+        mapRadarContainer.style.display = 'block';
         navInteraction.classList.add('active');
         currentSection = 'interaction';
         if (!mapData) loadMapData();
         break;
     }
 
-    // Adjust body height to match visible section
-    document.body.style.minHeight = 'auto'; // ADD THIS
+    // Scroll to top of page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Use 'auto' for instant scroll without animation
+    });
   }
 
   // Load air quality data
