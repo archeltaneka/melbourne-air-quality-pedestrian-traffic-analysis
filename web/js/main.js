@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mapRadarContainer.style.display = 'block';
         navInteraction.classList.add('active');
         currentSection = 'interaction';
-        if (!mapData) loadMapData();
+        if (!mapData) loadData();
         break;
     }
 
@@ -99,10 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error loading air quality data:", error);
     }
-  }
 
-  // Load pedestrian count data
-  async function loadMapData() {
     try {
       const response = await fetch("../../data/pedestrian/pedestrian_count_final.csv");
       const csvData = await response.text();
@@ -144,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize map
   function initializeMap() {
-    const map = L.map("map").setView([-37.8136, 144.9631], 14); // Melbourne CBD
+    const map = L.map("map").setView([-37.8136, 144.9631], 13); // Melbourne CBD
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
@@ -601,17 +598,18 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("y1", 0)
         .attr("x2", x)
         .attr("y2", y)
-        .attr("stroke", "#bc6c25")
-        .attr("stroke-width", 1);
+        .attr("stroke", "#e0ddcbff") // Modern gray
+        .attr("stroke-width", 2);
 
       // Add axis label
       svg.append("text")
-        .attr("x", x * 1.1)
-        .attr("y", y * 1.1)
+        .attr("x", x * 1.15)
+        .attr("y", y * 1.15)
         .attr("text-anchor", x > 0 ? "start" : "end")
         .attr("dominant-baseline", "middle")
-        .style("font-size", "12px")
-        .style("font-weight", "bold")
+        .style("font-size", "13px")
+        .style("font-weight", "700")
+        .style("fill", "#2c5282") // Primary blue
         .text(d.axis);
     });
 
@@ -624,15 +622,18 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("cy", 0)
         .attr("r", radiusLevel)
         .attr("fill", "none")
-        .attr("stroke", "#bc6c25")
-        .attr("stroke-dasharray", "2,2")
-        .attr("opacity", 0.5);
+        .attr("stroke", "#000307ff") // Light border color
+        .attr("stroke-dasharray", "3,3")
+        .attr("stroke-width", 1)
+        .attr("opacity", 0.6);
 
       // Add value labels
       svg.append("text")
         .attr("x", 5)
         .attr("y", -radiusLevel)
-        .style("font-size", "10px")
+        .style("font-size", "11px")
+        .style("fill", "#718096") // Text muted color
+        .style("font-weight", "600")
         .text((maxValue * level / levels).toFixed(1));
     }
 
@@ -642,11 +643,30 @@ document.addEventListener("DOMContentLoaded", function () {
       .radius(d => valueScale(d.value))
       .curve(d3.curveLinearClosed);
 
+    // Add gradient definition for the fill
+    const gradient = svg.append("defs")
+      .append("linearGradient")
+      .attr("id", "radarGradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "100%")
+      .attr("y2", "100%");
+
+    gradient.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "#4299e1") // Primary light blue
+      .attr("stop-opacity", 0.3);
+
+    gradient.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "#38b2ac") // Accent teal
+      .attr("stop-opacity", 0.3);
+
     svg.append("path")
       .datum(radarData)
       .attr("d", line)
-      .attr("fill", "rgba(96, 108, 56, 0.3)")
-      .attr("stroke", "#606c38")
+      .attr("fill", "url(#radarGradient)")
+      .attr("stroke", "#2c5282") // Primary blue
       .attr("stroke-width", 3);
 
     // Add points for each pollutant
@@ -657,23 +677,24 @@ document.addEventListener("DOMContentLoaded", function () {
       .attr("class", "radar-point")
       .attr("cx", d => Math.cos(angleScale(d.axis)) * valueScale(d.value))
       .attr("cy", d => Math.sin(angleScale(d.axis)) * valueScale(d.value))
-      .attr("r", 5)
-      .attr("fill", "#283618")
+      .attr("r", 6)
+      .attr("fill", "#2c5282") // Primary blue
       .attr("stroke", "white")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 3)
+      .style("cursor", "pointer")
       .on("mouseover", function (event, d) {
         d3.select(this)
           .transition()
           .duration(200)
-          .attr("r", 7)
-          .attr("fill", "#dda15e");
+          .attr("r", 9)
+          .attr("fill", "#38b2ac"); // Accent teal on hover
 
         tooltip.transition().duration(200).style("opacity", 0.9);
         tooltip.html(`
-          <strong>${d.axis}</strong><br/>
-          Concentration: ${d.value.toFixed(3)}<br/>
-          Max Value: ${maxValue.toFixed(3)}
-        `)
+                <strong style="color: #2c5282;">${d.axis}</strong><br/>
+                <span style="color: #4a5568;">Concentration: <strong>${d.value.toFixed(3)}</strong></span><br/>
+                <span style="color: #718096; font-size: 0.9em;">Max: ${maxValue.toFixed(3)}</span>
+            `)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 28) + "px");
       })
@@ -681,8 +702,8 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select(this)
           .transition()
           .duration(200)
-          .attr("r", 5)
-          .attr("fill", "#283618");
+          .attr("r", 6)
+          .attr("fill", "#2c5282");
 
         tooltip.transition().duration(500).style("opacity", 0);
       });
@@ -690,11 +711,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add title
     svg.append("text")
       .attr("x", 0)
-      .attr("y", -radius - 30)
+      .attr("y", -radius - 100)
       .attr("text-anchor", "middle")
-      .style("font-size", "18px")
-      .style("font-weight", "bold")
+      .style("font-size", "20px")
+      .style("font-weight", "800")
       .style("letter-spacing", "0.5px")
+      .style("fill", "#1a365d") // Primary dark
       .text("POLLUTANT LEVELS");
   }
 
