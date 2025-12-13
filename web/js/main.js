@@ -517,7 +517,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Draw radar chart polygon
     const line = d3.lineRadial()
-      .angle(d => angleScale(d.axis))
+      .angle(d => angleScale(d.axis) + Math.PI / 2)
       .radius(d => valueScale(d.value))
       .curve(d3.curveLinearClosed);
 
