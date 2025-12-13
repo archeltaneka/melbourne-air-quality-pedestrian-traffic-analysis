@@ -132,8 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
       startDateFilter.value = formatDate(minDate);
       endDateFilter.value = formatDate(maxDate);
 
-      // Create density chart
-      createDensityChart();
     } catch (error) {
       console.error("Error loading pedestrian data:", error);
     }
@@ -176,126 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         );
     });
-  }
-
-  // Create density chart
-  function createDensityChart() {
-    const container = d3.select("#density-chart");
-    container.selectAll("*").remove();
-
-    const margin = { top: 20, right: 30, bottom: 60, left: 80 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
-
-    const svg = container.append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    // Aggregate data by location and time
-    const aggregatedData = d3.groups(mapData, d => d.area_name)
-      .map(([area, values]) => {
-        const avgPedestrians = d3.mean(values, d => d.pedestrian_count);
-        const avgPollutants = {
-          CO: d3.mean(values, d => d.CO),
-          NO2: d3.mean(values, d => d.NO2),
-          O3: d3.mean(values, d => d.O3),
-          "PM2.5": d3.mean(values, d => d["PM2.5"]),
-          PM10: d3.mean(values, d => d.PM10)
-        };
-
-        // Use PM2.5 as representative pollutant
-        return {
-          area,
-          avgPedestrians,
-          avgPollutant: avgPollutants["PM2.5"]
-        };
-      })
-      .filter(d => !isNaN(d.avgPollutant) && d.avgPollutant > 0);
-
-    // Create scales
-    const xScale = d3.scaleLinear()
-      .domain([0, d3.max(aggregatedData, d => d.avgPedestrians)])
-      .nice()
-      .range([0, width]);
-
-    const yScale = d3.scaleLinear()
-      .domain([0, d3.max(aggregatedData, d => d.avgPollutant)])
-      .nice()
-      .range([height, 0]);
-
-    // Add axes
-    svg.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(xScale).tickFormat(d => Math.round(d)))
-      .append("text")
-      .attr("x", width / 2)
-      .attr("y", 40)
-      .attr("fill", "#283618")
-      .style("text-anchor", "middle")
-      .style("font-weight", "bold")
-      .text("Average Pedestrian Count");
-
-    svg.append("g")
-      .call(d3.axisLeft(yScale).tickFormat(d => d.toFixed(1)))
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -60)
-      .attr("x", -height / 2)
-      .attr("fill", "#283618")
-      .style("text-anchor", "middle")
-      .style("font-weight", "bold")
-      .text("PM₂.₅ Concentration (μg/m³)");
-
-    // Add scatter plot
-    svg.selectAll("circle")
-      .data(aggregatedData)
-      .enter().append("circle")
-      .attr("cx", d => xScale(d.avgPedestrians))
-      .attr("cy", d => yScale(d.avgPollutant))
-      .attr("r", 6)
-      .attr("fill", "#606c38")
-      .attr("opacity", 0.7)
-      .attr("stroke", "#283618")
-      .attr("stroke-width", 1)
-      .on("mouseover", function (event, d) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("r", 8)
-          .attr("fill", "#dda15e");
-
-        tooltip.transition().duration(200).style("opacity", 0.9);
-        tooltip.html(`
-          <strong>${d.area}</strong><br/>
-          Avg Pedestrians: ${Math.round(d.avgPedestrians)}<br/>
-          PM₂.₅: ${d.avgPollutant.toFixed(2)} μg/m³
-        `)
-          .style("left", (event.pageX + 10) + "px")
-          .style("top", (event.pageY - 28) + "px");
-      })
-      .on("mouseout", function () {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("r", 6)
-          .attr("fill", "#606c38");
-
-        tooltip.transition().duration(500).style("opacity", 0);
-      });
-
-    // Add trend line
-    const trendData = d3.regressionLinear()(aggregatedData.map(d => [d.avgPedestrians, d.avgPollutant]));
-
-    svg.append("line")
-      .attr("x1", xScale(trendData[0][0]))
-      .attr("y1", yScale(trendData[0][1]))
-      .attr("x2", xScale(trendData[1][0]))
-      .attr("y2", yScale(trendData[1][1]))
-      .attr("stroke", "#d7191c")
-      .attr("stroke-width", 2)
-      .attr("stroke-dasharray", "5,5");
   }
 
   // Render bar plots based on the selected granularity and date range
