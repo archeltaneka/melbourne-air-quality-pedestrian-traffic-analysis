@@ -33,6 +33,11 @@ class AirQualityProcessor:
     def _fill_null_valuse(self, df):
         knn_imputer = IterativeImputer(max_iter=10, random_state=0)
         features = df[self.num_cols]
+        # IterativeImputer will raise an error when all values in the column are null
+        # Thus, we just replace them with a constant value 0
+        for col in features.columns:
+            if features[col].isnull().all():
+                features[col] = 0
         knn_imputer.fit(features)
         df[self.num_cols] = np.where(df[self.num_cols].isnull(), knn_imputer.transform(features), df[self.num_cols])
 
