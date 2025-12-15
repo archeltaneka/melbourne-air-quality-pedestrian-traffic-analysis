@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load air quality data
   async function loadData() {
     try {
-      const response = await fetch("../../data/air_quality/air_quality_final.csv");
+      const response = await fetch("/data/air_quality/air_quality_final.csv");
       const csvData = await response.text();
       data = d3.csvParse(csvData, d => ({
         datetime_AEST: new Date(d.datetime_AEST),
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      const response = await fetch("../../data/pedestrian/pedestrian_count_final.csv");
+      const response = await fetch("/data/pedestrian/pedestrian_count_final.csv");
       const csvData = await response.text();
       mapData = d3.csvParse(csvData, d => ({
         datetime_AEST: new Date(d.datetime_AEST),

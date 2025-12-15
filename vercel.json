@@ -1,7 +1,3 @@
 {
-    "functions": {
-        "web/**/*.js": {
-            "includeFiles": "data/**"
-        }
-    }
+    "outputDirectory": "web"
 }
