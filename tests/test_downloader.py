@@ -18,6 +18,8 @@ class TestDownloader:
         assert dl.data_dir == Path('data')
         assert dl.air_quality_dir == Path('data/air_quality')
         assert dl.pedestrian_dir == Path('data/pedestrian')
+        assert dl.air_quality_web_dir == Path('web/data/air_quality')
+        assert dl.pedestrian_web_dir == Path('web/data/pedestrian')
         assert dl.logger is not None
 
 
@@ -35,6 +37,8 @@ class TestDownloader:
         assert downloader.data_dir.exists()
         assert downloader.air_quality_dir.exists()
         assert downloader.pedestrian_dir.exists()
+        assert downloader.air_quality_web_dir.exists()
+        assert downloader.pedestrian_web_dir.exists()
         downloader.logger.info.assert_called_with('Setting up data directory...')
 
 
@@ -45,6 +49,8 @@ class TestDownloader:
         downloader.data_dir.mkdir(parents=True, exist_ok=True)
         downloader.air_quality_dir.mkdir(parents=True, exist_ok=True)
         downloader.pedestrian_dir.mkdir(parents=True, exist_ok=True)
+        downloader.air_quality_web_dir.mkdir(parents=True, exist_ok=True)
+        downloader.pedestrian_web_dir.mkdir(parents=True, exist_ok=True)
         
         # Should not raise any exception
         downloader._setup()
@@ -52,6 +58,8 @@ class TestDownloader:
         assert downloader.data_dir.exists()
         assert downloader.air_quality_dir.exists()
         assert downloader.pedestrian_dir.exists()
+        assert downloader.air_quality_web_dir.exists()
+        assert downloader.pedestrian_web_dir.exists()
 
 
     # Test _setup method when parent directory doesn't exist
@@ -66,6 +74,8 @@ class TestDownloader:
         assert downloader.data_dir.exists()
         assert downloader.air_quality_dir.exists()
         assert downloader.pedestrian_dir.exists()
+        assert downloader.air_quality_web_dir.exists()
+        assert downloader.pedestrian_web_dir.exists()
 
     
     # Test _download method
@@ -236,6 +246,8 @@ class TestDownloader:
         downloader.data_dir = tmp_path / 'data'
         downloader.air_quality_dir = downloader.data_dir / 'air_quality'
         downloader.pedestrian_dir = downloader.data_dir / 'pedestrian'
+        downloader.air_quality_web_dir = downloader.web_dir / 'data' / 'air_quality'
+        downloader.pedestrian_web_dir = downloader.web_dir / 'data' / 'pedestrian'
         
         # Should not raise any exceptions
         downloader.download()

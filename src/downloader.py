@@ -13,8 +13,11 @@ logging.basicConfig(
 class Downloader:
     def __init__(self):
         self.data_dir = Path('data')
+        self.web_dir = Path('web')
         self.air_quality_dir = self.data_dir/'air_quality'
         self.pedestrian_dir = self.data_dir/'pedestrian'
+        self.air_quality_web_dir = self.web_dir/'data/air_quality'
+        self.pedestrian_web_dir = self.web_dir/'data/pedestrian'
         self.logger = logging.getLogger(__name__)
     
     def _setup(self):
@@ -25,6 +28,10 @@ class Downloader:
             self.air_quality_dir.mkdir(parents=True, exist_ok=True)
         if not self.pedestrian_dir.exists():
             self.pedestrian_dir.mkdir(parents=True, exist_ok=True)
+        if not self.air_quality_web_dir.exists():
+            self.air_quality_web_dir.mkdir(parents=True, exist_ok=True)
+        if not self.pedestrian_web_dir.exists():
+            self.pedestrian_web_dir.mkdir(parents=True, exist_ok=True)
 
     def _download(self, url, save_path):
         self.logger.info(f"Downloading {url} to {save_path}...")

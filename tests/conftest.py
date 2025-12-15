@@ -20,8 +20,11 @@ def downloader(tmp_path):
     with patch.object(Downloader, '__init__', lambda self: None):
         dl = Downloader()
         dl.data_dir = tmp_path / 'data'
+        dl.web_dir = tmp_path / 'web'
         dl.air_quality_dir = dl.data_dir / 'air_quality'
         dl.pedestrian_dir = dl.data_dir / 'pedestrian'
+        dl.air_quality_web_dir = dl.web_dir / 'data' / 'air_quality'
+        dl.pedestrian_web_dir = dl.web_dir / 'data' / 'pedestrian'
         dl.logger = Mock()
         
         return dl
