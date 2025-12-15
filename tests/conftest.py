@@ -1,13 +1,19 @@
 from pathlib import Path
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent))
+
+import pandas as pd
 
 import pytest
 from unittest.mock import patch, Mock
 
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from src.downloader import Downloader
+from src.air_quality import AirQualityProcessor
+from src.pedestrian_count import PedestrianCountProcessor
 
 
+### Downloader Fixtures ###
 @pytest.fixture
 def downloader(tmp_path):
     """Fixture to create a Downloader instance with temporary directory"""
@@ -26,3 +32,91 @@ def mock_urlretrieve():
     """Fixture to mock urllib.request.urlretrieve"""
     with patch('urllib.request.urlretrieve') as mock:
         yield mock
+
+
+### Air Quality Data Processing Fixtures ###
+@pytest.fixture
+def processor():
+    """Fixture to create an AirQualityProcessor instance"""
+    proc = AirQualityProcessor()
+    proc.logger = Mock()
+    return proc
+
+
+@pytest.fixture
+def sample_raw_data():
+    """Fixture to create sample raw air quality data"""
+    return pd.DataFrame({
+        'datetime_AEST': ['2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00'],
+        'datetime_local': ['2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00'],
+        'location_id': [1, 1, 1, 1, 1, 1, 1],
+        'location_name': ['Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook'],
+        'latitude': [-37.8136, -37.8136, -37.8136, -37.8136, -37.8136, -37.8136, -37.8136],
+        'longitude': [144.9631, 144.9631, 144.9631, 144.9631, 144.9631, 144.9631, 144.9631],
+        'parameter_name': ['CO', 'NO2', 'PM10', 'DBT', 'O3', 'PM2.5', 'SO2'],
+        'parameter_method_name': ['CO', 'NO2', 'PM10', 'DBT', 'O3', 'PM2.5', 'SO2'],
+        'parameter_description': ['Carbon Monoxide', 'Nitrogen Dioxide', 'Particulate Matter of 10 microns or less', 'Dry Bulb Temperature', 'Ozone', 'Particulate Matter of 2.5 microns or less', 'Sulfur Dioxide'],
+        'value': [0.5, 15.0, 0.6, 19, 40, 8, 2],
+        'unit_of_measure': ['ppm', 'ppb', 'ug/m3', 'deg.C', 'ppb', 'ug/m3', 'ppb'],
+        'validation_flag': ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+        'method_quality': ['Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method'],
+        'analysis_method_name': ['Analysis A', 'Analysis B', 'Analysis C', 'Analysis D', 'Analysis E', 'Analysis F', 'Analysis G']
+    })
+
+
+@pytest.fixture
+def sample_raw_data_has_negative_values():
+    """Fixture to create sample raw air quality data"""
+    return pd.DataFrame({
+        'datetime_AEST': ['2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00'],
+        'datetime_local': ['2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00'],
+        'location_id': [1, 1, 1, 1, 1, 1, 1],
+        'location_name': ['Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook'],
+        'latitude': [-37.8136, -37.8136, -37.8136, -37.8136, -37.8136, -37.8136, -37.8136],
+        'longitude': [144.9631, 144.9631, 144.9631, 144.9631, 144.9631, 144.9631, 144.9631],
+        'parameter_name': ['CO', 'NO2', 'PM10', 'DBT', 'O3', 'PM2.5', 'SO2'],
+        'parameter_method_name': ['CO', 'NO2', 'PM10', 'DBT', 'O3', 'PM2.5', 'SO2'],
+        'parameter_description': ['Carbon Monoxide', 'Nitrogen Dioxide', 'Particulate Matter of 10 microns or less', 'Dry Bulb Temperature', 'Ozone', 'Particulate Matter of 2.5 microns or less', 'Sulfur Dioxide'],
+        'value': [-0.5, -15.0, -0.6, -19, -40, -8, -2],
+        'unit_of_measure': ['ppm', 'ppb', 'ug/m3', 'deg.C', 'ppb', 'ug/m3', 'ppb'],
+        'validation_flag': ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+        'method_quality': ['Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method', 'Equivalence Method'],
+        'analysis_method_name': ['Analysis A', 'Analysis B', 'Analysis C', 'Analysis D', 'Analysis E', 'Analysis F', 'Analysis G']
+    })
+
+
+@pytest.fixture
+def sample_clean_data():
+    """Fixture to create sample cleaned data"""
+    return pd.DataFrame({
+        'datetime_AEST': pd.to_datetime(['2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00', '2022-01-01 01:00:00']),
+        'location_name': ['Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook', 'Point Crook'],
+        'latitude': [-37.8136, -37.8136, -37.8136, -37.8136, -37.8136, -37.8136, -37.8136],
+        'longitude': [144.9631, 144.9631, 144.9631, 144.9631, 144.9631, 144.9631, 144.9631],
+        'CO': [0.5, 0.6, 0.4, 0.5, 0.6, 0.4, 0.5],
+        'DBT': [25.0, 15.0, 28.0, 25.0, 15.0, 28.0, 25.0],
+        'NO2': [15.0, 12.0, 18.0, 15.0, 12.0, 18.0, 15.0],
+        'O3': [40.0, 35.0, 42.0, 40.0, 35.0, 42.0, 40.0],
+        'PM10': [20.0, 25.0, 18.0, 20.0, 25.0, 18.0, 20.0],
+        'PM2.5': [8.0, 10.0, 7.0, 8.0, 10.0, 7.0, 8.0],
+        'SO2': [2.0, 1.5, 2.5, 2.0, 1.5, 2.5, 2.0]
+    })
+
+@pytest.fixture
+def sample_wrangled_data():
+    """Fixture to create sample wrangled data"""
+    return pd.DataFrame({
+        'datetime_AEST': pd.to_datetime(['2022-01-15 10:00:00', '2022-06-15 14:00:00', '2022-12-15 20:00:00']),
+        'month': [1, 6, 12],
+        'date': [pd.Timestamp('2022-01-15').date(), pd.Timestamp('2022-06-15').date(), pd.Timestamp('2022-12-15').date()],
+        'day': [15, 15, 15],
+        'hour': [10, 14, 20],
+        'season': ['summer', 'winter', 'summer'],
+        'CO': [0.5, 0.6, 0.4],
+        'DBT': [25.0, 15.0, 28.0],
+        'NO2': [15.0, 12.0, 18.0],
+        'O3': [40.0, 35.0, 42.0],
+        'PM10': [20.0, 25.0, 18.0],
+        'PM2.5': [8.0, 10.0, 7.0],
+        'SO2': [2.0, 1.5, 2.5]
+    })
