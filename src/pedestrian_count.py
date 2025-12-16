@@ -83,7 +83,7 @@ class PedestrianCountProcessor:
         return df
 
     def _add_missing_areas(self, df):
-        missing_cols = set(self.cols_to_add) - set(df.columns)
+        missing_cols = sorted(set(self.cols_to_add) - set(df.columns))
         for col in missing_cols:
             df[col] = 0
 
@@ -107,11 +107,12 @@ class PedestrianCountProcessor:
         return df
 
     def _extract_area(self, area):
+        # If the area contains more than 1 area name, only take the first one
         match = re.split(r'[-(]', area, maxsplit=1)
         extracted_area = match[0].strip()
         if extracted_area not in self.nominatim_mapping_rules:
             return extracted_area + ", Victoria, Australia"  # Take the first part and strip whitespace
-        return self.nominatim_mapping_rules[extracted_area] + ", Victoria, Australia"  # Fallback: return the entire string if no match
+        return self.nominatim_mapping_rules[extracted_area] + ", Victoria, Australia"  # Fallback: return the entire first area name if no match
 
     def clean(self, df):
         df = self._clean_columns(df)
