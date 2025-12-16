@@ -16,8 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.pedestrian_count import PedestrianCountProcessor
 
 
-class TestPedestrianCountProcessorInit:
-    """Test suite for the PedestrianCountProcessor.__init__ method"""
+class TestPedestrianCountProcessor:
+    """Test suite for the PedestrianCountProcessor class"""
 
     ### Test initialization ###
     def test_init_creates_instance(self):

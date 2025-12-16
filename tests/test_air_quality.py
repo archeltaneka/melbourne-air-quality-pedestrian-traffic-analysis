@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.air_quality import AirQualityProcessor
 
 
-class AirQualityProcessor:
+class TestAirQualityProcessor:
     """Test suite for the AirQualityProcessor class"""
 
     ### Test initialization ###
