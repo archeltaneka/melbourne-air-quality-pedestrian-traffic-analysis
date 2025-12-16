@@ -125,15 +125,11 @@ class PedestrianCountProcessor:
         return df
     
     def wrangle(self, df):
-        df['month'] = df['Date'].dt.month
-        df['date'] = df['Date'].dt.date
-        df['day'] = df['Date'].dt.day
-        df = self._get_season(df)
         df['datetime_AEST'] = df['Date'].astype(str) + " " + df['Hour'].astype(str).str.zfill(2) + ":00:00"
         df['datetime_AEST'] = pd.to_datetime(df['datetime_AEST'], format='%Y-%m-%d %H:%M:%S')
         # Pivot the data into long format for easier visualization
         df = pd.melt(
-            df,
+            df.drop(columns=['Date', 'Hour'], axis=1),
             id_vars=['datetime_AEST'],
             var_name='area',
             value_name='pedestrian_count'
