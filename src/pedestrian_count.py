@@ -46,6 +46,9 @@ class PedestrianCountProcessor:
         self.logger = logging.getLogger(__name__)
 
     def _clean_columns(self, df):
+        if len(df) == 0:
+            raise ValueError("DataFrame is empty")
+            
         df.columns = (
             df.columns
               .str.replace("-", " - ", regex=False)  # Standardize the spelling of place names
