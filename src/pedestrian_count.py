@@ -48,7 +48,7 @@ class PedestrianCountProcessor:
     def _clean_columns(self, df):
         if len(df) == 0:
             raise ValueError("DataFrame is empty")
-            
+
         df.columns = (
             df.columns
               .str.replace("-", " - ", regex=False)  # Standardize the spelling of place names
@@ -66,17 +66,17 @@ class PedestrianCountProcessor:
         return col
 
     def _cast_column_types(self, df):
-        object_cols = [col for col in df.columns if col != 'Date']
+        int_cols = [col for col in df.columns if col != 'Date']
         df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
-        for col in object_cols:
+        for col in int_cols:
             df[col] = df[col].astype(int)
 
         return df
 
     def _handle_null_values(self, df):
-        df['Date'] = df['Date'].dropna(axis=0) # Remove rows with null Date values
-        object_cols = [col for col in df.columns if col != 'Date']
-        for col in object_cols:
+        df = df.dropna(subset=['Date'], axis=0) # Remove rows with null Date values
+        int_cols = [col for col in df.columns if col != 'Date']
+        for col in int_cols:
             df[col] = df[col].replace(r'^(?!\d+\.?\d*$).*', 0, regex=True) # Replace non-numeric values with 0
             df[col] = df[col].fillna(0)
 
