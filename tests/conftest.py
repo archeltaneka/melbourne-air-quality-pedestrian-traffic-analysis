@@ -125,9 +125,45 @@ def sample_wrangled_data():
     })
 
 
+### Pedestrian Count Data Processing Fixtures ###
 @pytest.fixture
 def pedestrian_count_processor():
     """Fixture to create a PedestrianCountProcessor instance"""
     proc = PedestrianCountProcessor()
     proc.logger = Mock()
     return proc
+
+
+@pytest.fixture
+def sample_raw_pedestrian_count_data():
+    """Fixture to create sample raw pedestrian count data"""
+    return pd.DataFrame({
+        'Date': ['01/01/2022', '01/01/2022'],
+        'Hour': ['10', '11'],
+        'Area A': ['100', '200'],
+        'Melbourne Central': ['100', '200'],
+        'Little Londsdale St (East)': ['100', '200'],
+        '380 Elizabeth St': ['100', '200'],
+        'Rmit Building 80': ['100', '200'],
+        'Queen Victoria Market': ['100', '200'],
+        'Rmit Bld 80 - 445 Swanston Street': ['100', '200']
+    })
+
+
+@pytest.fixture
+def sample_clean_pedestrian_count_data():
+    """Fixture to create sample clean pedestrian count data"""
+    return pd.DataFrame({
+        'Date': pd.to_datetime(['01/01/2022', '01/01/2022'], format='%d/%m/%Y'),
+        'Hour': [10, 11],
+        'Melbourne Central': [100, 200],
+        'Little Londsdale St (East)': [100, 200],
+        '380 Elizabeth St': [100, 200],
+        'Rmit Building 80': [200, 400],
+        'Queen Victoria Market': [100, 200],
+        "William St - Little Lonsdale St (West)": [0, 0],
+        "Errol St (West)": [0, 0],
+        "Flagstaff Station (East)": [0, 0],
+        "La Trobe St - William St (South)": [0, 0]
+    })
+
