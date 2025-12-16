@@ -39,7 +39,7 @@ def mock_urlretrieve():
 
 ### Air Quality Data Processing Fixtures ###
 @pytest.fixture
-def processor():
+def air_quality_processor():
     """Fixture to create an AirQualityProcessor instance"""
     proc = AirQualityProcessor()
     proc.logger = Mock()
@@ -123,3 +123,11 @@ def sample_wrangled_data():
         'PM2.5': [8.0, 10.0, 7.0],
         'SO2': [2.0, 1.5, 2.5]
     })
+
+
+@pytest.fixture
+def pedestrian_count_processor():
+    """Fixture to create a PedestrianCountProcessor instance"""
+    proc = PedestrianCountProcessor()
+    proc.logger = Mock()
+    return proc
