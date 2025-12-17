@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.downloader import Downloader
 from src.air_quality import AirQualityProcessor
 from src.pedestrian_count import PedestrianCountProcessor
+from src.area_mapping import AreaMapper
 
 
 ### Downloader Fixtures ###
@@ -167,3 +168,81 @@ def sample_clean_pedestrian_count_data():
         "La Trobe St - William St (South)": [0, 0]
     })
 
+
+### Area Mapping Fixtures ###
+@pytest.fixture
+def mock_nominatim():
+    """Fixture to mock Nominatim"""
+    with patch('src.area_mapping.Nominatim') as mock:
+        yield mock
+
+
+@pytest.fixture
+def mapper(tmp_path):
+    """Fixture to create an AreaMapper instance"""
+    with patch('src.area_mapping.Nominatim'):
+        mapper = AreaMapper()
+        mapper.logger = Mock()
+        mapper.save_dir = tmp_path / "area_mapping"
+        mapper.save_dir.mkdir(parents=True, exist_ok=True)
+        return mapper
+
+
+@pytest.fixture
+def mock_geocode_success():
+    """Fixture for successful geocoding"""
+    mock_location = Mock()
+    mock_location.raw = {
+        "lat": "-37.8136",
+        "lon": "144.9631",
+        "display_name": "Melbourne CBD, Victoria, Australia"
+    }
+    return mock_location
+
+
+@pytest.fixture
+def mock_geocode_failure():
+    """Fixture for failed geocoding"""
+    return None
+
+
+@pytest.fixture
+def mapper(tmp_path):
+    """Fixture to create an AreaMapper instance"""
+    with patch('src.area_mapping.Nominatim'):
+        mapper = AreaMapper()
+        mapper.logger = Mock()
+        mapper.save_dir = tmp_path / "area_mapping"
+        mapper.save_dir.mkdir(parents=True, exist_ok=True)
+        return mapper
+
+
+@pytest.fixture
+def sample_location_df():
+    """Fixture for sample location DataFrame"""
+    return pd.DataFrame({
+        'nominatim_area': ['melbourne cbd', 'bourke street', 'federation square'],
+        'pedestrian_count': [100, 200, 150]
+    })
+
+
+@pytest.fixture
+def sample_location_mapping():
+    """Fixture for sample location mapping"""
+    return [
+        {
+            "query_area": "melbourne cbd",
+            "lat": "-37.8136",
+            "lon": "144.9631"
+        },
+        {
+            "query_area": "bourke street",
+            "lat": "-37.8141",
+            "lon": "144.9633"
+        },
+        {
+            "query_area": "federation square",
+            "lat": "-37.8180",
+            "lon": "144.9685"
+        }
+    ]
