@@ -5,6 +5,7 @@ import re
 import time
 from typing import List, Dict, Any
 
+import pandas as pd
 from geopy.geocoders import Nominatim
 
 
