@@ -1,3 +1,6 @@
 {
+    "git": {
+        "deploymentEnabled": false
+    },
     "outputDirectory": "web"
 }
