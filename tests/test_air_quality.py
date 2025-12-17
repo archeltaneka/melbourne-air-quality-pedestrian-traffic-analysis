@@ -22,15 +22,15 @@ class TestAirQualityProcessor:
     ### Test initialization ###
     def test_init_creates_instance(self):
         """Test that __init__ creates a valid instance"""
-        air_quality_processor = AirQualityair_quality_processor()
+        air_quality_processor = AirQualityProcessor()
         
         assert air_quality_processor is not None
-        assert isinstance(air_quality_processor, AirQualityair_quality_processor)
+        assert isinstance(air_quality_processor, AirQualityProcessor)
 
 
     def test_init_sets_correct_attributes(self):
         """Test that __init__ sets up correct attributes"""
-        proc = AirQualityair_quality_processor()
+        proc = AirQualityProcessor()
         
         assert proc.measurements_to_exclude == ["BSP", "SWS", "VWD", "VWS", "Sigma05", "BPM2.5", "SIG05"]
         assert isinstance(proc.measurements_to_exclude, list)
