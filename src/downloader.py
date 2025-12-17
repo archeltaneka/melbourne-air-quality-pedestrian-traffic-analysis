@@ -54,7 +54,7 @@ class Downloader:
         """
         Set up the data directory and its subdirectories.
 
-        Arguments
+        Parameters
         ---------
         None
 
@@ -79,7 +79,7 @@ class Downloader:
         """
         Download a file from a URL to a specified path.
 
-        Arguments
+        Parameters
         ---------
         url: str
             URL of the file to download.
@@ -102,7 +102,7 @@ class Downloader:
         """
         Download both air quality and pedestrian data.
 
-        Arguments
+        Parameters
         ---------
         None
 
