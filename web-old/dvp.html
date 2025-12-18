@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Quality Check A Day</title>
+  <link rel="stylesheet" href="dvp.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto:wght@400;700&display=swap">
+</head>
+<body>
+  <!-- Project Description Section -->
+  <div id="project-info" class="visible">
+    <h1>Air Quality Check A Day, Keeps The Pollution Away</h1>
+    <p id="description">Air pollution is a growing concern in Australia, contributing to chronic respiratory diseases and even deaths. Personally, I've noticed how poor air quality affects my endurance and energy during outdoor activities like running. This made me wonder: How does air quality influence daily life, particularly pedestrian activity? With urban populations increasing and air pollution worsening, understanding this relationship is critical for creating healthier, more livable cities.</p>
+    <h2>Project Aims</h2>
+    <ul id="aims">
+      <li>To identify the seasonal trends in air quality, particularly harmful pollutants.</li>
+      <li>To explore the correlation between pollutant levels and daily pedestrian counts.</li>
+      <li>To provide policymakers and health professionals with actionable insights into mitigating health risks caused by poor air quality.</li>
+    </ul>
+    <!-- Data Sources Section -->
+    <h2>Data Sources</h2>
+    <ul>
+      <li>
+        <strong>Air Quality:</strong> Environment Protection Authority (EPA) Victoria. (2022). Air Quality Data for Victoria. Retrieved March 11, 2025, from <a href = https://apps.epa.vic.gov.au/datavic/Data_Vic/AirWatch/2022_All_sites_air_quality_hourly_avg_AIR-I-F-V-VH-O-S1-DB-M2-4-0.xlsx>https://apps.epa.vic.gov.au/datavic/Data_Vic/AirWatch/2022_All_sites_air_quality_hourly_avg_AIR-I-F-V-VH-O-S1-DB-M2-4-0.xlsx</a>
+      </li>
+      <li>
+        <strong>Pedestrian Count:</strong> City of Melbourne. (2022). Pedestrian Count Data for Melbourne (January-December 2022). Retrieved March 11, 2025, from <a href = https://www.pedestrian.melbourne.vic.gov.au/datadownload/January_2022.csv>https://www.pedestrian.melbourne.vic.gov.au/datadownload/January_2022.csv</a>
+        (Note: The complete dataset spans from January to December 2022)
+      </li>
+    </ul>
+  </div>
+  <!-- Visualisation Section -->
+  <div id="visualization-container" class="hidden">
+    <!-- Instructions -->
+    <div id="instructions">
+        <h2><u>First, pollutant trends</u></h2>
+        <p><strong>This visualisation displays individual plots for five different pollutants (CO, NO2, O3, PM2.5, PM10). Each plot shows the trend in 2022 in Victoria.</strong></p>
+        <ul>
+            <li>CO: Carbon monoxide (CO) is an odorless, colorless gas that kills without warning. It claims the lives of hundreds of people every year and makes thousands more ill.</li>
+            <li>NO2: Nitrogen Dioxide (NO2) forms when fossil fuels such as coal, oil, methane gas (natural gas) or diesel are burned at high temperatures. NO2 and other nitrogen oxides in the outdoor air contribute to particle pollution</li>
+            <li>O3: Ozone (O3) composed of three oxygen atoms joined together. At ground level, ozone is the main component of smog and is the product of the interaction between sunlight and emissions from sources such as motor vehicles and industry</li>
+            <li>PM: Particulate Matter (diameters <2.5 mm or <10 mm) comes in many sizes and shapes and can be made up of hundreds of different chemicals. Some are emitted directly from a source, such as construction sites, unpaved roads, fields, smokestacks or fires.</li>
+        </ul>
+        <h2><u>How to use The visualization</u></h2>
+        <p></p>
+        <ul>
+            <li><strong>HOVER:</strong> Hover over the plots to see detailed information about pollutant levels at specific times.</li>
+            <li><strong>FILTER:</strong> Use the dropdown to view the data by monthly, daily, or hourly granularity. You can also filter the data by selecting a date range. <b><u>You can only filter dates within 2022 only.</u></b></li>
+        </ul>
+    </div>
+    <!-- Barplots -->
+    <div id="plots">
+      <div id="plot-row-1" class="plot-row">
+          <div id="plot-co" class="plot"></div>
+          <div id="plot-no2" class="plot"></div>
+      </div>
+      <div id="plot-row-2" class="plot-row">
+          <div id="plot-o3" class="plot"></div>
+          <div id="plot-pm25" class="plot"></div>
+      </div>
+      <div id="plot-row-3" class="plot-row-centered">
+          <div id="plot-pm10" class="plot-centered"></div>
+      </div>
+  </div>
+    <!-- Dropdown for Time Granularity and Calendar Filter -->
+    <div id="controls">
+        <label for="time-granularity">Select Time Granularity:</label>
+        <select id="time-granularity">
+            <option value="monthly">Monthly</option>
+            <option value="daily">Daily</option>
+            <option value="hourly">Hourly</option>
+        </select>
+        <!-- Calendar Filter -->
+        <div id="calendar-filter">
+            <div class="date-picker">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date">
+            </div>
+
+            <div class="date-picker">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date">
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Map and Radar Chart Section -->
+  <div id="map-radar-container" class="hidden">
+    <!-- Instructions -->
+    <div id="instructions-map">
+      <h2><u>Influence on pedestrian traffic</u></h2>
+      <p><strong>The map and the radar chart below shows the number of pedestrians at a certain location along with the air quality (pollutant levels) at that period of time.</strong></p>
+      <ul>
+        <li>The number of pedestrians are high on average during the rush hours (07:00 - 09:00), then decreases at noon, and goes back up again after the office hours (20:00 - 23:00)</li>
+        <li>During this time, the pollution levels are at their highest, particularly NO2, PM10, and O3.</li>
+        <li>Australia establishes Particulate Matter (PM) and Ozone (O3) as the two concerning pollutants with PM being the most hazardous pollutants.</li>
+        <li>This is quite a concerning situtation where people are being active outdoors when the PM2.5, PM10, and O3 quality are poor.</li>
+      </ul>
+      <h2><u>How to use the visualisation</u></h2>
+      <ul>
+        <li><strong>HOVER:</strong> Hover over the blue circles to see detailed information about pedestrian counts and the area name.</li>
+        <li><strong>RADAR CHART:</strong> The radar chart below shows pollutant levels for the selected time window.</li>
+        <li><strong>SLIDER:</strong> Use the slider to select a specific time window and update the map and radar chart</li>
+        <li><strong>MEDIA CONTROL:</strong> The "Play" button will slide the slider automatically from start date to end date. The "Stop" button will stop the slider at any point. "Next" and "Prev" buttons will increase/decrease the slider by 1 hour. The "Reset" button will reset the slider position to the start point and reset the start date and end date filter.</li>
+        <li><strong>FILTER:</strong> Use the date range to filter specific period of time. <b><u>You can only filter dates within 2022 only.</u></b></li>
+      </ul>
+      <p><strong>For example, you can set the start and end date during the Christmas in 2022 (12-24-2022 until 12-31-2022). People started to gather around the city areas to celebrate Christmas in the evening until night. This trend continues until the new year's eve.</strong></p>
+    </div>
+    <!-- Map and Radar Chart Container -->
+    <div id="map-radar-wrapper">
+      <!-- Map -->
+      <div id="map"></div>
+      <!-- Radar Chart -->
+      <div id="radar-chart"></div>
+    </div>
+    <!-- Slider Container -->
+    <div id="slider-container" style="text-align: center;">
+      <label for="timeline-slider">Select Time Window:</label>
+      <input type="range" id="timeline-slider" min="0" max="100" value="0">
+      <span id="slider-value">Date: Loading...</span>
+      <!-- Buttons -->
+      <div id="button-container" style="margin-top: 10px;">
+        <button id="prev-button">Prev</button>
+        <button id="play-button">Play</button>
+        <button id="stop-button">Stop</button>
+        <button id="reset-button">Reset</button>
+        <button id="next-button">Next</button>
+        <label for="start-date-filter">Start Date:</label>
+        <input type="date" id="start-date-filter">
+        <label for="end-date-filter">End Date:</label>
+        <input type="date" id="end-date-filter">
+      </div>
+    </div>
+  </div>
+  <script src="https://d3js.org/d3.v7.min.js "></script>
+  <script src="dvp.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
+</body>
+</html>
