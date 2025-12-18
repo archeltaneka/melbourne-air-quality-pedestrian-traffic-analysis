@@ -128,8 +128,13 @@ melbourne-air-quality-pedestrian-traffic-analysis/
     ├── test_pedestrian_count.py
 ```
 
-## 🖼️ Screenshots
+## 🖼️ Visualization Preview
 
+<img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/1c9f05e8-9975-4ebd-9aef-24427aaf9a4c" />
+
+<img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/5b90c42d-2e10-4183-9303-0804d2e67e3d" />
+
+<img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/a5be3ed5-4ecf-4086-a2b9-0b4e139bd668" />
 
 ## ⚠️ Limitations
 
