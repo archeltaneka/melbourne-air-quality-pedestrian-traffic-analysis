@@ -45,9 +45,9 @@ The resulting **interactive dashboard** enables users to explore these dynamics 
 
 > 🎓 This project originated from one of my Master's unit, FIT5147 (Data Exploration and Visualization) at Monash University and and I extended it with production-grade infrastructure, including automated testing, CI/CD, and cloud deployment.
 
-🔗 Old Live App: [https://archeltaneka.github.io/portfolio-air-quality-visualization/old/dvp.html](https://archeltaneka.github.io/portfolio-air-quality-visualization/old/dvp.html)
+🔗 Original (Assignment version) Live App: [https://archeltaneka.github.io/portfolio-air-quality-visualization/old/dvp.html](https://archeltaneka.github.io/portfolio-air-quality-visualization/old/dvp.html)
 
-🔗 New Live App: [https://melbourne-air-quality-pedestrian-tr.vercel.app/](https://melbourne-air-quality-pedestrian-tr.vercel.app/)
+🔗 New (Current version) Live App: [https://melbourne-air-quality-pedestrian-tr.vercel.app/](https://melbourne-air-quality-pedestrian-tr.vercel.app/)
 
 ## 📂 Dataset
 
@@ -272,6 +272,12 @@ melbourne-air-quality-pedestrian-traffic-analysis/
 │   ├── js/                         # D3.js visualizations
 │   │   └── main.js
 │   └── data/                       # Preprocessed CSV files for visualization
+│
+├── web-old/                        # Previous version of frontend application used to submit the assignment
+│   ├── dvp.html                    # Main dashboard page
+│   ├── dvp.css                     # Stylesheets
+│   ├── dvp.js                      # D3.js visualizations
+│   └── assets/                     # Static assets (background image)
 │
 └── .github/
     └── workflows/
