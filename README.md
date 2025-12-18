@@ -20,6 +20,7 @@
     - [Visual Insights](#-visual-insights)
     - [Data Processing Pipeline](#-data-processing-pipeline)
     - [Testing & CI](#-testing--ci)
+    - [Intended Users](#-intended-users)
 - [Tech Stack](#️-tech-stack)
 - [Requirements](#-requirements)
 - [How to Use](#-how-to-use)
@@ -132,6 +133,12 @@ Includes:
 - Codecov integration
 - All deployments are gated by CI. The frontend is only deployed if all unit tests pass.
 
+### 👥 Intended Users
+
+- Urban planners and policymakers
+- Public health researchers
+- Data scientists exploring spatio-temporal environmental data
+
 ## 🛠️ Tech Stack
 
 - Python
@@ -143,7 +150,7 @@ Includes:
 
 ## 📃 Requirements
 - Python 3.10+
-- [Live Server](https://github.com/ritwickdey/vscode-live-server-plus-plus) (or similar tools)
+- A local web server (e.g., `python -m http.server` or [VS Code Live Server](https://github.com/ritwickdey/vscode-live-server-plus-plus))
 
 ## 📦 How To Use
 
@@ -158,7 +165,12 @@ pip install -r requirements.txt
 ```
 python ./data.py
 ```
-This will download the raw data, process it, and save the preprocessed datasets in the `web/data` directory, which will be consumed by the frontend web app.
+This will:
+- Download raw data from EPA Victoria and City of Melbourne
+- Clean and process ~765k air quality records
+- Process ~8.7k pedestrian count records
+- Generate analysis-ready datasets in `web/data/`
+- Takes approximately 1-2  minutes on first run
 
 3. Run the web app `web/index.html` by using live server or similar tools
 
