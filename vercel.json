@@ -2,16 +2,11 @@
     "git": {
         "deploymentEnabled": true
     },
-    "buildCommand": "echo 'No build needed'",
     "outputDirectory": "web",
     "routes": [
         {
-            "src": "/old/(.*)",
-            "dest": "/old/$1"
-        },
-        {
             "src": "/(.*)",
-            "dest": "/$1"
+            "dest": "/web/$1"
         }
     ]
 }
