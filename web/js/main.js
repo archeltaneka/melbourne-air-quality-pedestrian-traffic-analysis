@@ -56,14 +56,14 @@ document.addEventListener("DOMContentLoaded", function () {
         visualizationContainer.style.display = 'block';
         navPollutants.classList.add('active');
         currentSection = 'pollutants';
-        if (!data) loadData();
+        if (!data) loadAirQualityData();
         break;
       case 'interaction':
         mapRadarContainer.classList.add('visible');
         mapRadarContainer.style.display = 'block';
         navInteraction.classList.add('active');
         currentSection = 'interaction';
-        if (!mapData) loadData();
+        if (!mapData) loadPedestrianData();
         break;
     }
 
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Load air quality data
-  async function loadData() {
+  async function loadAirQualityData() {
     try {
       const response = await fetch("/data/air_quality/air_quality_final.csv");
       const csvData = await response.text();
@@ -99,7 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error loading air quality data:", error);
     }
+  }
 
+  // Load pedestrian data
+  async function loadPedestrianData() {
     try {
       const response = await fetch("/data/pedestrian/pedestrian_count_final.csv");
       const csvData = await response.text();
@@ -416,6 +419,9 @@ document.addEventListener("DOMContentLoaded", function () {
       map.remove();
     }
     map = initializeMap();
+    if (!data) {
+      loadData();
+    }
     addSymbolsToMap(map, data);
   }
 
